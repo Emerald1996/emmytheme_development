@@ -1,0 +1,30 @@
+<div class="contact_form p-3">
+    {% form 'contact' %}
+        {{ form.errors | default_errors }}
+
+      <div class="max-w-md mx-auto bg-white mt-8 p-8 rounded-md shadow-md shadow-green-400">
+        <h2 class="text-2xl font-bold mb-6">Contact Us</h2>
+
+        <form action="/contact#contact_form" method="post" id="contact_form">
+        <input type="hidden" name="form_type" value="contact">
+        
+        <div class="mb-4">
+          <label for="name" class="block text-sm font-medium text-gray-600">Your Name:</label>
+          <input type="text" name="contact[name]" id="name" class="w-full px-4 py-2 border rounded focus:outline-none focus:border-green-500" required>
+        </div>
+  
+        <div class="mb-4">
+          <label for="email" class="block text-sm font-medium text-gray-600">Email Address:</label>
+          <input type="email" name="contact[email]" id="email" class="w-full px-4 py-2 border rounded focus:outline-none focus:border-green-500" required>
+        </div>
+  
+        <div class="mb-4">
+          <label for="message" class="block text-sm font-medium text-gray-600">Message:</label>
+          <textarea name="contact[body]" id="message" rows="4" class="w-full px-4 py-2 border rounded focus:outline-none focus:border-green-500" required></textarea>
+        </div>
+  
+        <button type="submit" class="w-full bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-700 focus:outline-none focus:bg-green-700">Submit</button>
+        </form>
+      </div>
+    {% endform %}
+</div>

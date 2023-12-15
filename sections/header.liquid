@@ -1,0 +1,129 @@
+<style>
+  .header{
+    background: {{ section.settings.background }};
+    color: {{ section.settings.color }};
+  }
+</style>
+
+<div class="border-y">
+  <header class="header items-center px-4 py-4 page-width w-full sticky top-0 bg-gradient-to-r from-green-500 to-green-200" style="position: {{ section.settings.sticky_header_type }};">
+  
+      <div class="header__logo mx-auto my-2 md:my-0 md:mr-auto md:ml-0" style="max-width: {{ section.settings.logo_width }}px;">
+        {% if section.settings.logo != blank %}
+          <a href="/" class="header__logo">
+            {{ section.settings.logo | image_url: width: 400 | image_tag: loading: 'lazy' }}
+          </a>
+        {% else %}
+          <a href="/" class="header__logo-title">
+            {{ shop.name }}
+          </a>
+        {% endif %}
+      </div>
+  
+      <nav class="header__menu flex" x-data>
+        <button class="lg:hidden" @click="$dispatch('toggle-menu')" type="button">
+          {% render 'menu-icon', class: 'w-10' %}
+        </button>
+
+        <ul class="header__menu-nav hidden lg:flex">
+          {% for link in section.settings.menu.links %}
+            {% if link.links != blank %}
+              <li class="nav__item py-5 px-4 block relative">
+                  <a href="{{ link.url }}">{{ link.title }}</a>
+                  <ul class="nav__item-submenu absolute bg-white border py-3 px-4 min-w-[160px] top-16 left-1/2 transform -translate-x-1/2">
+                    {% for sublink in linklists[link.handle].links %}
+                      <li>
+                        <a class="block py-1 hover:opacity-75 " href="{{ sublink.url }}">
+                          {{ sublink.title }}
+                        </a>
+                      </li>
+                    {% endfor %}
+                  </ul>
+              </li>
+            {% else %}
+              <li>
+                <a class="nav__item py-5 px-4 block" href="{{ link.url }}"> {{ link.title }}</a>
+              </li>
+            {% endif %}
+          {% endfor %}
+        </ul>
+      </nav>
+  
+      <div class="header__icons flex items-center justify-end space-x-5"> 
+          <a href="/cart" class="header__icon text-center relative">
+              {% render 'icon-cart-empty', class: 'w-10' %}
+              <span class="cart__count min-w-[22px] text-sm min-h-[22px] absolute grid place-content-center rounded-full -top-3 -right-1 text-white bg-black"> {{ cart.item_count }} </span>
+          </a>
+      </div>
+  
+  </header>
+
+
+  {% render 'responsive-menu' %}
+  
+
+</div>
+
+
+{% schema %}
+  {
+    "name": "t:sections.header.name",
+    "class": "section-header",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "logo",
+        "label": "logo"
+      },
+      {
+        "type": "range",
+        "id": "logo_width",
+        "min": 50,
+        "max": 250,
+        "step": 10,
+        "default": 100,
+        "unit": "px",
+        "label": "width"
+      },
+      
+      {
+        "type": "color",
+        "id": "color",
+        "label": "text-color",
+        "default": "#000000"
+      },  
+      {
+          "type": "color",
+          "id": "background",
+          "label": "Background",
+          "default": "#ffffff"
+      },
+      {
+        "type": "link_list",
+        "id": "menu",
+        "default": "main-menu",
+        "label": "t:sections.header.settings.menu.label"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_line_separator",
+        "default": true,
+        "label": "t:sections.header.settings.show_line_separator.label"
+      },
+      {
+        "type": "header",
+        "content": "t:sections.all.spacing"
+      },
+      {
+        "type": "range",
+        "id": "margin_bottom",
+        "min": 0,
+        "max": 100,
+        "step": 4,
+        "unit": "px",
+        "label": "t:sections.header.settings.margin_bottom.label",
+        "default": 0
+      }
+    ]
+  }
+  {% endschema %}

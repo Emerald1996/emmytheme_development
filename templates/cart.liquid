@@ -1,0 +1,46 @@
+<div class="cartpage max-w-4xl mx-auto bg-white p-8 mt-8 rounded-md shadow-md">
+    <div class="mb-8">
+        <div class="cart_container">
+            <form action="{{ routes.cart_url }}" method="post" class="items-center mb-4">
+                {% if cart.empty? %}
+                    <h5>Your cart is empty <span><a href="/products" class="text-green-500 hover:underline">click to continue shopping</a></span></h5>
+                    {%- else -%} 
+                     {% comment %} ---------------loop through the cart object--------- {% endcomment %}
+
+                {% for item in cart.items %}
+                    <div class="cart_display flex items-center mb-4 w-full  border-b border-gray-300">
+                        {{ item.image | image_url: width: 50 | image_tag }}
+
+                        <div class="flex-1 ml-2">
+                            <h4 class="text-sm font-serif">{{ item.title }}</h4>
+                            <p class="text-500 font-bold">{{ item.quantity }}</p>
+                            <p class="text-green-500 font-bold">{{ item.final_line_price | money }}</p>
+                        </div>
+                        
+                        <div class="ml-4">
+                          <a href="{{ item.url_to_remove }}" class="text-red-500 hover:text-red-700 focus:outline-none">Remove</a>
+                        </div>
+                    </div>
+                    
+                {% endfor %}
+            {% endif %}
+            <div>
+                <h2 class="text-2xl font-bold mb-4">Cart Summary</h2>
+                <div class="flex justify-between mb-4">
+                  <span class="text-gray-600">Subtotal:</span>
+                  <span class="text-green-500 font-bold">{{ cart.items_subtotal_price | money }}</span>
+                </div>
+                <div class="flex justify-between mb-4">
+                  <span class="text-gray-600">Shipping:</span>
+                  <span class="text-green-500 font-bold">$0.00</span>
+                </div>
+                <div class="flex justify-between mb-4">
+                  <span class="text-gray-600">Total:</span>
+                  <span class="text-green-500 font-bold">{{ cart.total_price | money_with_currency }}</span>
+                </div>
+                <input type="submit" name="checkout" value="Checkout" class="w-full bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-700 focus:outline-none focus:bg-green-700 cursor-pointer">
+              </div>
+        </div>
+            </form>
+    </div>
+</div>

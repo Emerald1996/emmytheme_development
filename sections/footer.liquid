@@ -1,0 +1,266 @@
+<footer class="footer pt-8 mt-8 bg-gray-600 text-gray-200">
+  {% if section.settings.show_newsletter %}
+    <div class="footer__newsletter page-width">
+      {% if section.settings.newsletter_title != blank %}
+        <h2 class="text-center text-3xl font-default">{{ section.settings.newsletter_title }}</h2>
+      {% endif %}
+      {% if section.settings.newsletter_subtitle != blank %}
+        <div class="text-base py-2 font-medium">
+          {{ section.settings.newsletter_subtitle }}
+        </div>
+      {% endif %}
+
+      {% if section.settings.newsletter_html != blank %}
+        <div class="footer__newsletter--html">
+          {{ section.settings.newsletter_html }}
+        </div>
+      {% endif %}
+
+    </div>
+  {% endif %}
+
+  {%- if section.blocks.size > 0 -%}
+    <div class="footer__content-top page-width pt-8">
+      {%- if section.blocks.size > 0 -%}
+        <div class="footer__blocks-wrapper grid grid-cols-2 lg:grid-cols-4 lg:place-items-center gap-4">
+          {%- for block in section.blocks -%}
+            <div class="footer-block grid__item p-4 m-4 bg-green-500 w-50{% if block.type == 'link_list' and block.settings.heading != blank %} footer-block--menu{% endif %}" {{ block.shopify_attributes }}>
+              {%- if block.settings.heading != blank -%}
+                <h3 class="footer-block__heading font-medium uppercase mb-2 text-lg">{{- block.settings.heading | escape -}}</h3>
+              {%- endif -%}
+
+              {%- case block.type -%}
+
+                {%- when 'text' -%}
+                  <div class="footer-block__details-content rte">
+                    {{ block.settings.subtext }}
+                  </div>
+                {%- when 'link_list' -%}
+                  {%- if block.settings.menu != blank and block.settings.heading != blank -%}
+                    <ul class="footer-block__details-content list-unstyled font-medium">
+                      {%- for link in block.settings.menu.links -%}
+                        <li>
+                          <a href="{{ link.url }}" {% if link.url contains '#' %} title="Link" {%- endif -%} class="link link--text list-menu__item list-menu__item--link{% if link.active %} list-menu__item--active{% endif %}">
+                            {{ link.title }}
+                          </a>
+                        </li>
+                      {%- endfor -%}
+                    </ul>
+                  {%- endif -%} 
+                    
+                {%- when 'image' -%}
+
+                  <div class="footer-block__details-content footer-block-image {{ block.settings.alignment }}">
+                    {%- if block.settings.image != blank -%}
+                      {%- assign image_size = block.settings.image_width -%}
+                      {{ block.settings.image | image_url: width: image_size | image_tag }}
+                        
+                    {%- else -%}
+                      {{ 'image' | placeholder_svg_tag: 'placeholder-svg placeholder' }}
+                    {%- endif -%}
+                  </div>
+                {%- endcase -%}
+            </div>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+
+    </div>
+  {%- endif -%}
+
+  <div class="footer__content-bottom pb-6 pt-4">
+    <div>
+      
+      <div class="footer__column footer__column--info  ">
+        <div class="footer__copyright w-full flex items-center justify-around">
+            <small class="copyright__content flex items-center">
+              &copy; {{ 'now' | date: "%Y" }},  
+              {% if section.settings.copyright_text != blank %}
+                <p>{{ section.settings.copyright_text }}</p>
+              {% else %}
+                <p>{{ shop.name | link_to: routes.root_url }}</p>
+              {% endif %}
+            </small>
+            {% comment %} ----------display shopify payment---------- {% endcomment %}
+            <div>
+              {%- if section.settings.payment_enable -%}
+                <div class="footer__payment mt-2">
+                  <span class="sr-only">{{ 'sections.footer.payment' | t }}</span>
+                  <ul class="list flex space-x-2" role="list">
+                    {% assign enabled_payment_types = 'visa,master,american_express,paypal' | remove: ' ' | split: ',' %}
+                    {% for type in enabled_payment_types %}
+                      <li class="list-payment__item">
+                        {{ type | payment_type_svg_tag: class: 'icon icon--full-color' }}
+                      </li>
+                    {% endfor %}
+                  </ul>
+                </div>
+              {%- endif -%}
+            </div>
+        </div>
+      </div>
+    </div>
+    {% render 'social-media-links' %}
+
+  </div>
+</footer>
+
+
+{% schema %}
+    {
+      "name": "t:sections.footer.name",
+      "blocks": [
+        {
+          "type": "link_list",
+          "name": "t:sections.footer.blocks.link_list.name",
+          "settings": [
+            {
+              "type": "text",
+              "id": "heading",
+              "default": "Quick links",
+              "label": "t:sections.footer.blocks.link_list.settings.heading.label",
+              "info": "t:sections.footer.blocks.link_list.settings.heading.info"
+            },
+            {
+              "type": "link_list",
+              "id": "menu",
+              "default": "footer",
+              "label": "t:sections.footer.blocks.link_list.settings.menu.label",
+              "info": "t:sections.footer.blocks.link_list.settings.menu.info"
+            }
+          ]
+        },
+        
+        {
+          "type": "text",
+          "name": "t:sections.footer.blocks.text.name",
+          "settings": [
+            {
+              "type": "text",
+              "id": "heading",
+              "default": "Heading",
+              "label": "t:sections.footer.blocks.text.settings.heading.label"
+            },
+            {
+              "type": "richtext",
+              "id": "subtext",
+              "default": "<p>Share store details, promotions, or brand content with your customers.</p>",
+              "label": "t:sections.footer.blocks.text.settings.subtext.label"
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "name": "Image",
+          "settings": [
+            {
+              "type": "image_picker",
+              "id": "image",
+              "label": "Image"
+            },
+            {
+              "type": "range",
+              "id": "image_width",
+              "min": 50,
+              "max": 200,
+              "step": 5,
+              "unit": "px",
+              "label": "Image width",
+              "default": 100
+            },
+            {
+              "type": "select",
+              "id": "alignment",
+              "label": "Image alignment on large screen",
+              "options": [
+                {
+                  "value": "",
+                  "label": "Left"
+                },
+                {
+                  "value": "center",
+                  "label": "Center"
+                },
+                {
+                  "value": "right",
+                  "label": "Right"
+                }
+              ],
+              "default": "center"
+            }
+          ]
+        }
+      ],
+      
+      "settings": [
+        {
+          "type": "header",
+          "content": "Newsletter form"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_newsletter",
+          "default": false,
+          "label": "Show newsletter"
+        },
+        {
+          "type": "text",
+          "id": "newsletter_title",
+          "label": "Newsletter title"
+        },
+        {
+          "type": "richtext",
+          "id": "newsletter_subtitle",
+          "label": "Sub title"
+        },
+        {
+          "type": "html",
+          "id": "newsletter_html",
+          "label": "Newsletter HTML"
+        },
+        {
+          "type": "header",
+          "content": "Copyright"
+        },
+        {
+          "type": "richtext",
+          "id": "copyright_text",
+          "label": "Copyright text"
+        },
+        {
+          "type": "header",
+          "content": "t:sections.footer.settings.header__7.content"
+        },
+        {
+          "type": "checkbox",
+          "id": "payment_enable",
+          "default": true,
+          "label": "t:sections.footer.settings.payment_enable.label"
+        },
+        
+        {
+          "type": "header",
+          "content": "Social Media Links"
+        },
+        {
+          "type": "text",
+          "label": "Facebook",
+          "id": "social_facebook",
+          "default": "https://facebook.com/example"
+        },
+        {
+          "type": "text",
+          "label": "Twitter",
+          "id": "social_twitter",
+          "default": "https://twitter.com/example"
+        },
+        {
+          "type": "text",
+          "label": "Instagram",
+          "id": "social_instagram",
+          "default": "https://instagram.com/example"
+        }
+      ]
+      
+    }
+    {% endschema %}

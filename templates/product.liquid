@@ -1,0 +1,42 @@
+{%- if product.available -%}
+<div class="max-w-4xl mx-auto bg-white p-8 mt-8 rounded-md shadow-md shadow-green-400 flex flex-col lg:flex-row">
+  <div class="w-full lg:w-60">
+    {{ product.featured_image | image_url: width: "800x800" | image_tag: loading: 'lazy' }}
+  </div>
+
+  {% comment %} ----------------Product information--------------- {% endcomment %}
+    <div class="product_info lg:w-1/2 lg:ml-8">
+        <h3 class="text-2xl lg:text-sm font-bold mb-2">{{ product.title }}</h3>
+        <h4 class="text-green-500 font-bold mb-4 text-2xl">{{ product.price | money }}</h4>
+        <p class="text-gray-600 mb-4 text-lg lg:text-sm">{{ product.description }}</p>
+
+
+        {% comment %} ----------------Product variant--------------- {% endcomment %}
+ 
+        <div class="product_variant mb-4">
+         {% form 'product', product %}
+            <select name="id" class="w-full px-4 py-2 border rounded focus:outline-none focus:border-green-500">
+              {% for variant in product.variants %}
+                <option value="{{ variant.id }}" class="text-green-500">
+                    {{ variant.title }}
+                </option>
+              {% endfor %}
+            </select>
+
+
+            {% comment %} ----------------Product Quantity & cart button--------------- {% endcomment %}
+            <div>
+              <label for="quantity" class="block text-sm font-medium text-gray-600 mb-2">Quantity:</label>
+              <input type="number" name="quantity" id="quantity" class="w-16 px-4 py-2 border rounded focus:outline-none focus:border-green-500 mb-4" value="1" min="1">
+              <button type="submit" class="cart_button w-full md:text-2xl lg:text-sm bg-green-500 text-white px-4 sm:py-8 md:py-4 rounded-md hover:bg-green-700 focus:outline-none focus:bg-green-700">Add to Cart</button>
+              </div>
+            {% endform %}
+            <div>              
+                {%- render 'success-message' -%}
+            </div>
+        </div>
+    </div>
+</div>
+{% else %}
+<p class="text-red-500">Product is currently out of stock.</p>
+{%- endif -%}

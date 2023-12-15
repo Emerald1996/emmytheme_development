@@ -1,0 +1,35 @@
+<div id="collections-listing">
+  {% paginate collections by 10 %}
+
+    {% if collections.size > 0 %}
+
+    <h1 class="text-3xl text-center font-bold mb-4 md:mb-8">All Collections</h1>
+
+     <div class="max-w-4xl gap-8 mx-auto bg-white w-full p-4 md:p-8 mt-8 rounded-md shadow-md grid sm:grid-cols-1 lg:grid-cols-4">
+
+    <!-- Loop through collections -->
+
+    {% for collection in collections %}
+      <div class="col-md-1 bg-gray-100 p-2 shadow-sm mt-3 rounded-l shadow-green-400 transform transition duration-500 hover:scale-110">       
+        <p class="text-500 font-bold">{{ collection.products_count }} Products</p>
+
+        <!-- Add a link to view the collection -->
+        <a href="{{ collection.url }}" class="text-green-500 hover:underline">
+          <h2 class="text-2xl font-bold mb-2">{{ collection.title }}</h2>
+          {{ collection.image | image_url: width: '800x800' | image_tag: loading: 'lazy' }}
+        </a>
+        <p class="text-gray-600 mb-2 text-center text-3xl lg:text-sm">{{ collection.description }}</p>
+      </div>
+    {% endfor %}
+
+  </div>
+
+    <div id="pagination">
+      <p>{{ paginate | default_pagination }}</p>
+    </div>
+
+    {% else %}
+      <p>No Collections found...</p>
+    {% endif %}
+  {% endpaginate %}
+</div>

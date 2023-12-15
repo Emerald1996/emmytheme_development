@@ -1,0 +1,20 @@
+[
+    {
+        "name": "Colors",
+        "settings": [
+            {
+                "type": "color",
+                "id": "body_text",
+                "label": "Body text",
+                "default": "#000000"
+            },  
+            {
+                "type": "color",
+                "id": "background",
+                "label": "Background",
+                "default": "#222222"
+            }  
+        ]
+    }
+   
+]

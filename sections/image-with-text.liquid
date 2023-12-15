@@ -1,0 +1,83 @@
+<section class="max-w-6xl mx-auto bg-white p-4 md:p-8 mt-8 rounded-md shadow-md">
+<div class="flex flex-col justify-center items-center lg:flex-row gap-8 w-full">
+  <div class="bg-gray-200 w-80 p-4 rounded-md shadow-md">
+    {%- for block in section.blocks -%}
+      
+      {% if block.settings.image != blank %}
+        {{ block.settings.image | image_url: width: "800x500" | image_tag }}
+        {% else %}
+        {{ 'product-1' | placeholder_svg_tag }}
+      {% endif %}
+      </div>
+      <div class="flex flex-col justify-center items-center lg:flex-row gap-8 w-60 lg:w-full">
+          <div>
+            {% if block.settings.title != blank %}
+              <h2 class="text-lg font-bold mb-2">{{ block.settings.title }}</h2>
+            {% endif %}
+            {% if block.settings.text != blank %}
+              <p class="text-gray-600 mb-4 w-20">{{ block.settings.text }}</p>
+            {% endif %}
+            {% if block.settings.button_label != blank and block.settings.button_link != blank %}
+              <a href="{{ block.settings.button_link }}" class="mt-8 bg-green-500 text-white px-6 pb-2 rounded-md hover:bg-green-700 focus:outline-none focus:bg-green-700">
+                {{ block.settings.button_label }}
+              </a>
+            {% endif %}
+          </div>
+      </div> 
+    {%- endfor -%}
+  
+
+
+</div>
+</section>
+
+
+
+{% schema %}
+  {
+    "name": "Image with text",
+    "max_blocks": 10,
+    "blocks": [
+      {
+        "name": "image",
+        "type": "image",
+        "settings": [
+          {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Image"
+      },
+      
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Heading",
+            "default": "Image with text"
+          },
+          {
+            "type": "richtext",
+            "id": "text",
+            "label": "Text",
+            "default": "<p>Pair large text with an image to give focus to your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>"
+          },
+          {
+            "type": "text",
+            "id": "button_label",
+            "label": "Button label"
+          },
+          {
+            "type": "url",
+            "id": "button_link",
+            "label": "Button link"
+          }
+      ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Image with text",
+        "category": "Image"
+      }
+    ]
+  }
+{% endschema %}

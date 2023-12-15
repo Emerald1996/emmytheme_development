@@ -1,0 +1,65 @@
+{%- for block in section.blocks -%}
+  <div class="announcement-bar-container" style="background: {{ block.settings.background }}; padding: 5px 0;">
+    <h5 style="text-align: {{ block.settings.text_alignment }}; color: {{ block.settings.text_color }};">{{ block.settings.text }}</h5>
+  </div>
+{%- endfor -%}
+
+
+
+{% schema %}
+  {
+    "name": "t:sections.announcement-bar.name",
+    "max_blocks": 12,
+    "blocks": [
+      {
+        "type": "announcement",
+        "name": "t:sections.announcement-bar.blocks.announcement.name",
+        "settings": [
+          {
+            "type": "text",
+            "id": "text",
+            "default": "Welcome to our store",
+            "label": "t:sections.announcement-bar.blocks.announcement.settings.text.label"
+          },
+          {
+            "type": "select",
+            "id": "text_alignment",
+            "options": [
+              {
+                "value": "left",
+                "label": "left-align"
+              },
+              {
+                "value": "center",
+                "label": "center-align"
+              },
+              {
+                "value": "right",
+                "label": "right-align"
+              }
+            ],
+            "default": "center",
+            "label": "center-align"
+          },
+          {
+          "type": "color",
+          "id": "text_color",
+          "label": "text-color",
+          "default": "#000000"
+        },
+        {
+          "type": "color",
+          "id": "background",
+          "label": "Background-color",
+          "default": "#ffffff"
+        },
+          {
+            "type": "url",
+            "id": "link",
+            "label": "t:sections.announcement-bar.blocks.announcement.settings.link.label"
+          }
+        ]
+      }
+    ]
+  }
+  {% endschema %}

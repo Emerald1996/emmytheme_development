@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {{ content_for_header }}
+    <link rel="stylesheet" href="{{ "app.css" | asset_url }}">
+    <script src="{{ 'app.js' | asset_url }}" defer></script>
+</head>
+<body style="background-color: rgba(110, 109, 109, 0.142);">
+    {%- section 'announcement-bar' -%}
+    {%- section 'header' -%}
+    
+
+    <main id="MainContent" class="content-for-layout" role="main" tabindex="-1">
+
+        {% comment %} ----------render only sections for homepage-------- {% endcomment %}
+        
+        {%- if template == 'index' -%}
+            {% section 'image-banner' %}
+            {% section 'image-with-text' %}
+            {% section 'featured-collection' %}
+
+        {%- comment -%} Do not include the section for the homepage {% endcomment -%}
+      {%- else -%}
+      {{ content_for_layout }}
+    {%- endif -%}
+    </main>
+
+    {%- section 'footer' -%}
+</body>
+</html>

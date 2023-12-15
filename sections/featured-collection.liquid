@@ -1,0 +1,66 @@
+<section class="featured-collection max-w-6xl mx-auto bg-white p-4 md:p-8 mt-8 rounded-md shadow-md">
+  {% if section.settings.title != blank %}
+    <h2 class="text-3xl text-center font-bold mt-4 mb-4">{{ section.settings.title }}</h2>
+  {% endif %}
+
+  {%- assign collection = collections[section.settings.collection] -%}
+  {% assign productCount = collection.all_products_count %}
+
+    <div class="grid sm:grid-cols-1 place-items-center gap-8 lg:grid-cols-3">
+        {% for product in collection.products limit: 10 %}
+            <div class="col-md-1 bg-gray-100 p-2 shadow-sm mt-3 rounded-l shadow-green-400 transform transition duration-500 hover:scale-110">
+                <div class="product-item w-full">
+                    {% if product.featured_image != blank %}
+                        <a href="{{ product.url | within: collection }}">
+                            {{ product.featured_image | image_url: width: "800x500" | image_tag: loading: 'lazy' }}
+                            <hr>
+                            <div class="flex justify-evenly items-center w-full">
+                                <h3 class="text-3xl lg:text-sm">{{ product.title }}</h3>
+                                <h3 class="text-green-600 font-bold text-3xl lg:text-sm">{{ product.price | money }}</h3>
+                            </div>
+                        </a>
+                        
+                    {% endif %}
+                    
+                </div>
+
+                {% if productCount == 0 %}
+                    <div class="col-md-4">
+                      <h4 class="text-center">
+                          No products
+                      </h4>
+                    </div>
+                {% endif %}
+
+            </div>
+      
+        {% endfor %}
+
+        
+    </div>
+</section>
+
+{% schema %}
+  {
+    "name": "Featured collection",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Heading",
+        "default": "Featured collection"
+      },
+      {
+        "id": "collection",
+        "type": "collection",
+        "label": "Collection"
+      }
+    ],
+    "presets": [
+      {
+        "name": "Featured collection",
+        "category": "Collection"
+      }
+    ]
+  }
+{% endschema %}

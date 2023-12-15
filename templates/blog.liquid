@@ -1,0 +1,18 @@
+<div class="page_container max-w-4xl mx-auto">
+    <h1 class="text-xl font-bold text-center">{{ blog.title }}</h1>
+    <div class="blog_display ">
+        {% for article in blog.articles %}
+            <div class="grid grid-cols-1 lg:grid-cols-3">
+                <a href="{{ article.url }}">
+                   <div class="blog_container bg-gray-100 p-2 w-full shadow-sm mt-3 rounded-l shadow-green-400">
+                        {{ article.image | image_url: width: 500 | image_tag }}
+                        <h4>{{ article.title }}</h4>
+                        <h5 class="mb-4 text-green-500 decoration-lime-500">{{ article.author }}</h5>
+                        <p>{{ article.excerpt }}...</p>
+                    </div>
+                </a>
+            </div>
+          
+        {% endfor %}
+    </div>
+</div>
