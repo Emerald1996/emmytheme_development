@@ -7,5 +7,8 @@
 # ##Laravel
 # ##shopify themekit
 
+# Project video explanation below 👍
+# https://vimeo.com/895205804?share=copy
+
 
 Emmanuel Emerald
