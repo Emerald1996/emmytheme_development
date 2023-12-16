@@ -8,4 +8,4 @@
 # ##shopify themekit
 
 
-Emma Emeradld
+Emmanuel Emerald
